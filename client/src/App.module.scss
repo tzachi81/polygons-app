@@ -39,6 +39,7 @@
     }
   }
 }
+
 .mainContent {
   display: flex;
   flex-direction: column;
@@ -54,16 +55,18 @@
   overflow-x: hidden;
 }
 .sidebar {
-  z-index: 10;
+  z-index: 100;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.5);
+  
   &.isClosed {
     background-color: transparent;
+    height: 100vh;
   }
   &.isOpen {
     padding: 7px 7px;

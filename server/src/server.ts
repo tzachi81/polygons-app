@@ -43,8 +43,8 @@ app.use(express.json());
 
 app.use(cors(corsOptions));
 app.use('/api/polygons', polygonRoutes);
-app.use('/', serverHealthRoute);
-app.use('/api/', customDelayMiddleware);
+app.use('/api/health', serverHealthRoute);
+app.use('/api/polygons', customDelayMiddleware);
 app.use('/', customLogMiddleware);
 
 app.listen(PORT, () => {

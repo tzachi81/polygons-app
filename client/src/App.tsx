@@ -23,8 +23,14 @@ import useServerReady from "./hooks/useServerReady";
 const App: React.FC = () => {
   const { isServerReady } = useServerReady();
   const [isOpen, setIsOpen] = useState(false);
-  const { fetchPolygons, polygons, loading, addPolygon, removePolygon, imageUrl } =
-    usePolygons();
+  const {
+    fetchPolygons,
+    polygons,
+    loading,
+    addPolygon,
+    removePolygon,
+    imageUrl,
+  } = usePolygons();
   const [selectedPolygonId, setSelectedPolygonId] = useState<string | null>(
     null
   );
@@ -34,7 +40,7 @@ const App: React.FC = () => {
     if (Object.keys(polygons).length <= 0) return;
     handleSelectPolygon();
     setIsOpen((prev) => !prev);
-  }, []);
+  }, [polygons]);
 
   const handleAddPoint = useCallback((point: [number, number]) => {
     setDrawingPoints((prevPoints) => [...prevPoints, point]);
