@@ -1,0 +1,31 @@
+.appLoader {
+  display: inline-grid;
+  width: 70px;
+  aspect-ratio: 1;
+  animation: l5-0 8s steps(10) infinite;
+  margin-top: 20vh
+}
+.appLoader:before,
+.appLoader:after {
+  content:"";
+  grid-area: 1/1;
+}
+.appLoader:before {
+  clip-path: polygon(100% 50%,90.45% 79.39%,65.45% 97.55%,34.55% 97.55%,9.55% 79.39%,0% 50%,9.55% 20.61%,34.55% 2.45%,65.45% 2.45%,90.45% 20.61%,100% 50%,85.6% 24.14%,63.6% 8.15%,36.4% 8.15%,14.4% 24.14%,6% 50%,14.4% 75.86%,36.4% 91.85%,63.6% 91.85%,85.6% 75.86%,94% 50%,85.6% 24.14%);
+  background: linear-gradient(135deg, #EE7752, #E73C7E);
+}
+.appLoader:after {
+  background: linear-gradient(135deg, #23A6D5, #23D5AB);
+  clip-path: polygon(100% 50%,65.45% 97.55%,9.55% 79.39%,9.55% 20.61%,65.45% 2.45%);
+  margin: 23%;
+  translate: -143% 0;
+  transform-origin: right;
+  animation: l5-1 .8s linear infinite;
+}
+@keyframes l5-0 {
+  to { rotate: 1turn }
+}
+@keyframes l5-1 {
+  0% { rotate: -54deg }
+  to { rotate: 54deg }
+}
