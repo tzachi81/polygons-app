@@ -175,10 +175,10 @@ const PolygonCanvas: FC<PolygonCanvasProps> = ({
   }, [size.width, size.height]);
 
   useEffect(() => {
-    if (imageUrl !== "") {
+    if (polygons && imageUrl !== "") {
       drawPolygons();
     }
-  }, [drawPolygons, imageUrl, size]);
+  }, [drawPolygons, imageUrl, size, polygons]);
 
   return (
     <>

@@ -45,7 +45,7 @@ app.use(cors(corsOptions));
 app.use('/api/health', serverHealthRoute);
 app.use('/api/polygons', polygonRoutes);
 app.use('/api/polygons', customDelayMiddleware);
-app.use('/api', customLogMiddleware);
+app.use('/api/', customLogMiddleware);
 
 app.listen(PORT, () => {
   console.log(`Server is listening on http://localhost:${PORT}`);
