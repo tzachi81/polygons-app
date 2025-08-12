@@ -41,7 +41,9 @@ const corsOptions = {
 
 app.use(express.json());
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+console.log('Allowed origin', process.env.ALLOWED_ORIGIN);
+app.use(cors({ origin: process.env.ALLOWED_ORIGIN }));
 app.use('/api/health', serverHealthRoute);
 app.use('/api/polygons', polygonRoutes);
 app.use('/api/polygons', customDelayMiddleware);
