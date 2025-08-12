@@ -5,6 +5,8 @@ import type { Id } from 'react-toastify';
 const isProduction = import.meta.env.VITE_ENV === 'production';
 const serverUrl = isProduction ? import.meta.env.VITE_SERVER_URL : 'http://localhost:5005/api';
 
+console.log(`###Serving via ${serverUrl}`);
+
 const useServerReady = (retries = 5, interval = 1000) => {
   const [isServerReady, setIsServerReady] = useState(false);
   const [awaitingServer, setaWaitingServer] = useState(true);
