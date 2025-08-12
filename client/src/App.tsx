@@ -86,7 +86,6 @@ const App: React.FC = () => {
           onAddPoint={handleAddPoint}
           onUndoPoint={handleUndoPoint}
           selectedPolygonId={selectedPolygonId}
-          setIsOpen={setIsOpen}
           imageUrl={imageUrl}
         />
       );

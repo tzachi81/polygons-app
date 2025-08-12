@@ -24,7 +24,6 @@ interface PolygonCanvasProps {
   onAddPoint: (point: [number, number]) => void;
   onUndoPoint: () => void;
   selectedPolygonId: string | null;
-  setIsOpen: (isOpen: boolean) => void;
   imageUrl: string;
 }
 
@@ -34,7 +33,6 @@ const PolygonCanvas: FC<PolygonCanvasProps> = ({
   onAddPoint,
   onUndoPoint,
   selectedPolygonId,
-  setIsOpen,
   imageUrl,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -122,7 +120,6 @@ const PolygonCanvas: FC<PolygonCanvasProps> = ({
 
   const handleCanvasClick = useCallback(
     (event: React.MouseEvent<HTMLCanvasElement>) => {
-      setIsOpen(false);
       const canvas = canvasRef.current;
       if (!canvas) return;
       setIsDrawing(true);
