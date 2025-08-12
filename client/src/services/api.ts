@@ -1,7 +1,7 @@
 import type { IPolygon } from '../types/global.types';
 
 const isProduction = import.meta.env.VITE_ENV === 'production';
-const API_BASE_URL = isProduction ? import.meta.env.VITE_API_URL : 'http://localhost:5005/api/polygons/';
+const apiUrl = isProduction ? import.meta.env.VITE_API_URL : 'http://localhost:5005/api/polygons/';
 
 
 
@@ -11,7 +11,7 @@ const API_BASE_URL = isProduction ? import.meta.env.VITE_API_URL : 'http://local
 
 export const getPolygons = async (): Promise<IPolygon[]> => {
   console.log('Fetching polygons from the server...');
-  const response = await fetch(`${API_BASE_URL}`);
+  const response = await fetch(`${apiUrl}/api/polygons`);
   if (!response.ok) {
     throw new Error('Failed to fetch polygons');
   }
@@ -21,7 +21,7 @@ export const getPolygons = async (): Promise<IPolygon[]> => {
 };
 
 export const createPolygon = async (name: string, points: [number, number][]): Promise<IPolygon> => {
-  const response = await fetch(`${API_BASE_URL}`, {
+  const response = await fetch(`${apiUrl}/api/polygons`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ export const createPolygon = async (name: string, points: [number, number][]): P
 
 export const deletePolygon = async (id: string): Promise<void> => {
   console.log(`Deleting polygon with id: ${id} on server...`);
-  const response = await fetch(`${API_BASE_URL}${id}`, {
+  const response = await fetch(`${apiUrl}/${id}`, {
     method: 'DELETE',
   });
   if (!response.ok) {
