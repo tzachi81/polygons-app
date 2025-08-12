@@ -21,13 +21,15 @@ export const getPolygons = async (): Promise<IPolygon[]> => {
 };
 
 export const createPolygon = async (name: string, points: [number, number][]): Promise<IPolygon> => {
-  const response = await fetch(`${apiUrl}/api/polygons`, {
+  const createOptions = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ name, points }),
-  });
+  };
+
+  const response = await fetch(`${apiUrl}/api/polygons`, createOptions);
   if (!response.ok) {
     throw new Error('Failed to create polygon');
   }

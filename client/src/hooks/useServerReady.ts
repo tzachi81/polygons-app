@@ -3,9 +3,9 @@ import { toastify, unToastify } from '../components/appToaster/appToaster';
 import type { Id } from 'react-toastify';
 
 const isProduction = import.meta.env.VITE_ENV === 'production';
-const serverUrl = isProduction ? import.meta.env.VITE_SERVER_URL : 'http://localhost:5005/health';
+const serverUrl = isProduction ? import.meta.env.VITE_SERVER_URL : 'http://localhost:5005';
 
-const useServerReady = (url = `${serverUrl}/health`, retries = 5, interval = 1000) => {
+const useServerReady = (retries = 5, interval = 1000) => {
   const [isServerReady, setIsServerReady] = useState(false);
   const [awaitingServer, setaWaitingServer] = useState(true);
 
@@ -16,7 +16,7 @@ const useServerReady = (url = `${serverUrl}/health`, retries = 5, interval = 100
 
       while (attempts < retries) {
         try {
-          const response = await fetch(url);
+          const response = await fetch(`${serverUrl}/health`);
           if (response.ok) {
             setIsServerReady(true);
             toastId = toastify('Server is up.', 'success');
@@ -37,7 +37,7 @@ const useServerReady = (url = `${serverUrl}/health`, retries = 5, interval = 100
     };
 
     checkServer();
-  }, [url, retries, interval, toastify]);
+  }, [retries, interval, toastify]);
 
   return { isServerReady, awaitingServer };
 };
