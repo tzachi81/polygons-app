@@ -22,7 +22,7 @@ const customLogMiddleware = (request: Request, response: Response, next: NextFun
    next();
 };
 
-const devOrigins = ['http://localhost:5173', 'http://localhost:4173']; //vite
+const devOrigins = ['http://localhost:5173', 'http://localhost:4173'];
 const allowedOrigins = (process.env.NODE_ENV === "production") ? [process.env.ALLOWED_ORIGIN] : devOrigins;
 
 
@@ -42,10 +42,10 @@ const corsOptions = {
 app.use(express.json());
 
 app.use(cors(corsOptions));
-app.use('/api/polygons', polygonRoutes);
 app.use('/api/health', serverHealthRoute);
+app.use('/api/polygons', polygonRoutes);
 app.use('/api/polygons', customDelayMiddleware);
-app.use('/', customLogMiddleware);
+app.use('/api', customLogMiddleware);
 
 app.listen(PORT, () => {
   console.log(`Server is listening on http://localhost:${PORT}`);
