@@ -27,8 +27,21 @@ const allowedOrigins = (process.env.NODE_ENV === "production") ? [process.env.AL
 
 
 
-app.use(cors());
+const corsOptions = {
+    origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+};
+
+
+
 app.use(express.json());
+
+app.use(cors(corsOptions));
 app.use('/api/polygons', polygonRoutes);
 app.use('/health', serverHealthRoute);
 app.use('/', customDelayMiddleware);
