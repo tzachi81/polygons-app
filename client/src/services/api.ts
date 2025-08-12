@@ -1,7 +1,7 @@
 import type { IPolygon } from '../types/global.types';
 
 const isProduction = import.meta.env.VITE_ENV === 'production';
-const apiUrl = isProduction ? import.meta.env.VITE_API_URL : 'http://localhost:5005/api/polygons/';
+const apiUrl = isProduction ? import.meta.env.VITE_API_URL : 'http://localhost:5005';
 
 
 

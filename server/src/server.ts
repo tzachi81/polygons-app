@@ -43,7 +43,7 @@ app.use(express.json());
 
 app.use(cors(corsOptions));
 app.use('/api/polygons', polygonRoutes);
-app.use('/health', serverHealthRoute);
+app.use('/', serverHealthRoute);
 app.use('/', customDelayMiddleware);
 app.use('/', customLogMiddleware);
 

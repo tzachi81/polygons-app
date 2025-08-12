@@ -16,7 +16,7 @@ const useServerReady = (retries = 5, interval = 1000) => {
 
       while (attempts < retries) {
         try {
-          const response = await fetch(`${serverUrl}/health`);
+          const response = await fetch(`${serverUrl}`);
           if (response.ok) {
             setIsServerReady(true);
             toastId = toastify('Server is up.', 'success');
