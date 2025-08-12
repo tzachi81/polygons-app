@@ -1,6 +1,8 @@
 import type { IPolygon } from '../types/global.types';
 
-const API_BASE_URL = 'http://localhost:5005/api/polygons/';
+const isProduction = import.meta.env.VITE_ENV === 'production';
+const API_BASE_URL = isProduction ? import.meta.env.VITE_API_URL : 'http://localhost:5005/api/polygons/';
+
 
 
 //TODO: In review session: suggest to add JSDOCS decorators
