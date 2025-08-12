@@ -5,7 +5,7 @@ import type { Id } from 'react-toastify';
 const isProduction = import.meta.env.VITE_ENV === 'production';
 console.log(`###Environment production?: ${isProduction}`);
 
-const serverUrl = isProduction ? import.meta.env.VITE_SERVER_URL : 'http://localhost:5005/api';
+const serverUrl = isProduction ? import.meta.env.VITE_API_URL : 'http://localhost:5005/api';
 
 console.log(`###Serving via ${serverUrl}`);
 
