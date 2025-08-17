@@ -110,15 +110,7 @@ const App: React.FC = () => {
           {/* APP HEADER */}
           <div className={classes.appHeaderWrapper}>
             <div className={classes.appHeader}>
-              <h1>Applygon</h1>
-              {drawingPoints.length > 2 && !loading && (
-                <button
-                  className={classes.saveButton}
-                  onClick={handleSavePolygon}
-                >
-                  Save Polygon
-                </button>
-              )}
+              <h1>Applygon - Draw your shapes</h1>
             </div>
 
             {/* SIDEBAR */}
@@ -163,7 +155,21 @@ const App: React.FC = () => {
           {/* CANVAS */}
           <div className={classes.mainContent}>
             {!loading && memoizedCanvas ? (
-              <div className={classes.canvasContainer}>{memoizedCanvas}</div>
+              <>
+                <p>
+                  Left click on the canvas to start drawing. Right click to
+                  cancel
+                </p>
+                {drawingPoints.length > 2 && !loading && (
+                  <button
+                    className={classes.saveButton}
+                    onClick={handleSavePolygon}
+                  >
+                    Save Polygon
+                  </button>
+                )}
+                <div className={classes.canvasContainer}>{memoizedCanvas}</div>
+              </>
             ) : (
               <AppLoader />
             )}

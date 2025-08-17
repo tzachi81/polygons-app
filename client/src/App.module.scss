@@ -17,16 +17,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  .saveButton {
-    top: 60px;
-    left: 0;
-    height: 30px;
-    background-color: lightyellow;
-    color: black;
-    font-size: 18px;
-    padding: 4px 7px; 
-  }
+  margin-bottom: -25px;
 
   .actionHeader {
     display: flex;
@@ -44,6 +35,17 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+    .saveButton {
+    top: 60px;
+    left: 0;
+    height: 30px;
+    background-color: lightyellow;
+    color: black;
+    font-size: 18px;
+    padding: 4px 7px; 
+    margin-bottom: 7px;
+  }
 }
 
 .canvasContainer {
