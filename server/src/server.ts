@@ -24,8 +24,6 @@ const allowedOrigins = (process.env.NODE_ENV === "production") ? [process.env.AL
 
 const corsOptions: CorsOptions = {
     origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
-        console.log('Incoming origin:', origin);
-        console.log('Allowed origins:', allowedOrigins);
       if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {

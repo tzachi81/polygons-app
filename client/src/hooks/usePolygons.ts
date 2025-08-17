@@ -28,17 +28,17 @@ export const usePolygons = () => {
     } catch (err) {
       unToastify(toastId);
       if (retries > 0) {
-        console.log(`Retrying... ${retries} attempts left`);
         toastId = toastify(`Retrying canvas background(${retries} attempts left)`, 'warning');
         setTimeout(() => fetchImage(retries - 1), 1000);
       } else {
         unToastify(toastId);
-        toastify(
+        toastId = toastify(
           `Failed to get Canvas background image, ${err}`,
           'error'
         );
       }
     } finally {
+      unToastify(toastId);
       setLoading(false);
     }
   }, []);

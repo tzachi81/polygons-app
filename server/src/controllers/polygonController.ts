@@ -35,10 +35,6 @@ export const deletePolygon = async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
     const collection = await connectDB();
-
-    //TODO: (DONE) I should check the use of the native _id from mongo...
-
-    console.log('Deleting polygon with id:', id);
     
     const result = await collection.deleteOne({ _id: new ObjectId(id) });
     if (result.deletedCount === 0) {

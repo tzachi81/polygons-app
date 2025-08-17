@@ -1,11 +1,7 @@
-// // What do I need?:
-// // bg-image from taks doc: 'https://picsum.photos/1920/1080'
-// // comps.: canvas, List, List item, loader/spinner, main
-// // hooks?: maybe some usePolygons or useAPI for centralizing my API calls
-// //
 
-// //issues:
-// // I need to create a flow that updates the data on each CRUD operation.
+// Code issues
+// Conflated loading states and missing cleanup in async code (usePolygons retry logic, shared loader)
+// which can cause UI flickers and situations where the loader is not displayed when it should be
 
 import classes from "./App.module.scss";
 import MenuIcon from "./assets/menu-icon_50.svg?react";
@@ -19,6 +15,7 @@ import PolygonCanvas from "./components/canvas/PolygonCanvas";
 import PolygonList from "./components/polygonList/PolygonList";
 import { AppLoader } from "./components/appLoader/AppLoader";
 import useServerReady from "./hooks/useServerReady";
+import { toastify } from "./components/appToaster/appToaster";
 
 const App: React.FC = () => {
   const { isServerReady } = useServerReady();
@@ -37,7 +34,7 @@ const App: React.FC = () => {
   const [drawingPoints, setDrawingPoints] = useState<[number, number][]>([]);
 
   const toggleSidebar = useCallback(() => {
-    if (Object.keys(polygons).length <= 0) return;
+    if (polygons.length <= 0) return;
     handleSelectPolygon();
     setIsOpen((prev) => !prev);
   }, [polygons]);
@@ -61,9 +58,9 @@ const App: React.FC = () => {
         setDrawingPoints([]);
       }
     } else {
-      console.log("Polygons must have at least three points to be saved.");
+      toastify("Polygons must have at least three points to be saved.", 'info')
     }
-  }, [addPolygon, drawingPoints, polygons.length]);
+  }, [addPolygon, drawingPoints, polygons]);
 
   const handleSelectPolygon = useCallback((id: string | null = null) => {
     setSelectedPolygonId(id);
@@ -121,7 +118,7 @@ const App: React.FC = () => {
           {/* APP HEADER */}
           <div className={classes.appHeaderWrapper}>
             <div className={classes.appHeader}>
-              <h1>Polygon App</h1>
+              <h1>Applygon</h1>
               {drawingPoints.length > 2 && !loading && (
                 <button
                   className={classes.saveButton}
