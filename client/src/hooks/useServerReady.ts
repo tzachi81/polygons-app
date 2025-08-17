@@ -7,14 +7,16 @@ const isProduction = import.meta.env.VITE_ENV === 'production';
 const serverUrl = isProduction ? import.meta.env.VITE_API_URL : 'http://localhost:5005/api';
 
 const useServerReady = (retries = 5, interval = 1000) => {
+  
   const [isServerReady, setIsServerReady] = useState(false);
-  const [awaitingServer, setaWaitingServer] = useState(true);
 
   useEffect(() => {
     const checkServer = async () => {
+
       let attempts = 0;
       let toastId: Id = '';
 
+      
       while (attempts < retries) {
         try {
           const response = await fetch(`${serverUrl}/health`);
@@ -33,14 +35,13 @@ const useServerReady = (retries = 5, interval = 1000) => {
         attempts++;
         await new Promise(resolve => setTimeout(resolve, interval));
       }
-
-      setaWaitingServer(false);
     };
 
     checkServer();
-  }, [retries, interval, toastify]);
 
-  return { isServerReady, awaitingServer };
+  }, []);
+
+  return { isServerReady };
 };
 
 export default useServerReady;

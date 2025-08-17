@@ -1,8 +1,3 @@
-
-// Code issues
-// Conflated loading states and missing cleanup in async code (usePolygons retry logic, shared loader)
-// which can cause UI flickers and situations where the loader is not displayed when it should be
-
 import classes from "./App.module.scss";
 import MenuIcon from "./assets/menu-icon_50.svg?react";
 import CloseMenuIcon from "./assets/close-icon_30.svg?react";
@@ -15,7 +10,6 @@ import PolygonCanvas from "./components/canvas/PolygonCanvas";
 import PolygonList from "./components/polygonList/PolygonList";
 import { AppLoader } from "./components/appLoader/AppLoader";
 import useServerReady from "./hooks/useServerReady";
-import { toastify } from "./components/appToaster/appToaster";
 
 const App: React.FC = () => {
   const { isServerReady } = useServerReady();
@@ -57,8 +51,6 @@ const App: React.FC = () => {
         await addPolygon(name, drawingPoints);
         setDrawingPoints([]);
       }
-    } else {
-      toastify("Polygons must have at least three points to be saved.", 'info')
     }
   }, [addPolygon, drawingPoints, polygons]);
 
@@ -170,7 +162,6 @@ const App: React.FC = () => {
 
           {/* CANVAS */}
           <div className={classes.mainContent}>
-            <p></p>
             {!loading && memoizedCanvas ? (
               <div className={classes.canvasContainer}>{memoizedCanvas}</div>
             ) : (

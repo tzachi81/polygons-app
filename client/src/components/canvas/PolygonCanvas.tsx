@@ -1,18 +1,3 @@
-// //What do I need here?
-
-// // draw function: init canvas, draw a shape from given points,
-// // delete path/partial path,
-// // get shape points/details on click
-// //more?
-
-//REFERENCES:
-// //For review:
-// Drawing shapes on canvas:
-// // https://dev.to/get_pieces/drawing-interactive-shapes-with-canvas-elements-in-a-react-application-3d2n
-// // https://medium.com/@na.mazaheri/dynamically-drawing-shapes-on-canvas-with-fabric-js-in-react-js-8b9c42791903
-// Polygon loader animation:
-// // https://ploygonsloader.blogspot.com/2025/08/colorful-polygon-gear-loader.html
-
 import classes from "./polygonCanvas.module.scss";
 import React, { useRef, useEffect, useCallback, memo, useState } from "react";
 import type { FC } from "react";
@@ -44,15 +29,31 @@ const PolygonCanvas: FC<PolygonCanvasProps> = ({
     null
   );
   const [isDrawing, setIsDrawing] = useState(false);
+  const originalCanvasSize = { width: 1920, height: 1080 }; // Set to your original canvas size
+  const image = new Image();
+
+  const drawPolygons = useCallback(
+    (ctx: CanvasRenderingContext2D) => {
+      ctx.clearRect(0, 0, size.width, size.height); // Clear the canvas
+
+      ctx.drawImage(image, 0, 0, size.width, size.height);
+
+      drawExistingPolygons(ctx);
+      drawNewPolygon(ctx);
+    },
+    [size, image, polygons, drawingPoints, mousePosition, isDrawing]
+  );
 
   const drawNewPolygon = (ctx: CanvasRenderingContext2D) => {
     if (drawingPoints.length > 0 && isDrawing) {
       ctx.beginPath();
       drawingPoints.forEach(([x, y], index) => {
+        const scaledX = (x / originalCanvasSize.width) * size.width;
+        const scaledY = (y / originalCanvasSize.height) * size.height;
         if (index === 0) {
-          ctx.moveTo(x, y);
+          ctx.moveTo(scaledX, scaledY);
         } else {
-          ctx.lineTo(x, y);
+          ctx.lineTo(scaledX, scaledY);
         }
       });
       ctx.strokeStyle = "lime";
@@ -62,8 +63,14 @@ const PolygonCanvas: FC<PolygonCanvasProps> = ({
       if (mousePosition) {
         ctx.beginPath();
         const lastPoint = drawingPoints[drawingPoints.length - 1];
-        ctx.moveTo(lastPoint[0], lastPoint[1]);
-        ctx.lineTo(mousePosition[0], mousePosition[1]);
+        ctx.moveTo(
+          (lastPoint[0] / originalCanvasSize.width) * size.width,
+          (lastPoint[1] / originalCanvasSize.height) * size.height
+        );
+        ctx.lineTo(
+          (mousePosition[0] / originalCanvasSize.width) * size.width,
+          (mousePosition[1] / originalCanvasSize.height) * size.height
+        );
         ctx.strokeStyle = "lime";
         ctx.setLineDash([5, 7]);
         ctx.lineWidth = 2;
@@ -76,10 +83,12 @@ const PolygonCanvas: FC<PolygonCanvasProps> = ({
     polygons.forEach((polygon) => {
       ctx.beginPath();
       polygon.points.forEach(([x, y], index) => {
+        const scaledX = (x / originalCanvasSize.width) * size.width;
+        const scaledY = (y / originalCanvasSize.height) * size.height;
         if (index === 0) {
-          ctx.moveTo(x, y);
+          ctx.moveTo(scaledX, scaledY);
         } else {
-          ctx.lineTo(x, y);
+          ctx.lineTo(scaledX, scaledY);
         }
       });
       ctx.closePath();
@@ -92,44 +101,20 @@ const PolygonCanvas: FC<PolygonCanvasProps> = ({
     });
   };
 
-  const image = new Image();
-
-  const drawPolygons = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas || !imageUrl) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) {
-      console.error("Failed to get canvas context");
-      return;
-    }
-
-    image.onload = () => {
-      //I changed it from image.[width/height]
-      //to window.inner[x] to make it responsive
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-
-      drawExistingPolygons(ctx);
-      drawNewPolygon(ctx);
-    };
-    image.src = imageUrl;
-    image.width = window.innerWidth;
-    image.height = window.innerHeight;
-  }, [polygons, selectedPolygonId, drawingPoints, mousePosition]);
-
   const handleCanvasClick = useCallback(
     (event: React.MouseEvent<HTMLCanvasElement>) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
       setIsDrawing(true);
       const rect = canvas.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
+      const x =
+        (event.clientX - rect.left) * (originalCanvasSize.width / size.width); // Adjust for scaling
+      const y =
+        (event.clientY - rect.top) * (originalCanvasSize.height / size.height); // Adjust for scaling
 
       onAddPoint([x, y]);
     },
-    [onAddPoint]
+    [onAddPoint, size]
   );
 
   const handleMouseMove = useCallback(
@@ -138,12 +123,14 @@ const PolygonCanvas: FC<PolygonCanvasProps> = ({
       if (!canvas || drawingPoints.length === 0 || !isDrawing) return;
 
       const rect = canvas.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
+      const x =
+        (event.clientX - rect.left) * (originalCanvasSize.width / size.width); // Adjust for scaling
+      const y =
+        (event.clientY - rect.top) * (originalCanvasSize.height / size.height); // Adjust for scaling
 
       setMousePosition([x, y]);
     },
-    [drawingPoints.length, isDrawing]
+    [drawingPoints.length, isDrawing, size]
   );
 
   const handleMouseLeave = useCallback(() => {
@@ -157,7 +144,7 @@ const PolygonCanvas: FC<PolygonCanvasProps> = ({
       setMousePosition(null);
       onUndoPoint();
     },
-    [onUndoPoint, drawingPoints]
+    [onUndoPoint]
   );
 
   useEffect(() => {
@@ -166,23 +153,45 @@ const PolygonCanvas: FC<PolygonCanvasProps> = ({
     };
 
     window.addEventListener("resize", handleResize);
-
-    drawPolygons();
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [size.width, size.height]);
+  }, []);
 
   useEffect(() => {
-    if (polygons && imageUrl !== "") {
-      drawPolygons();
+    if (imageUrl) {
+      image.src = imageUrl;
+      image.onload = () => {
+        const canvas = canvasRef.current;
+        if (canvas) {
+          canvas.width = size.width;
+          canvas.height = size.height;
+          const ctx = canvas.getContext("2d");
+          if (ctx) {
+            drawPolygons(ctx);
+          }
+        }
+      };
     }
-  }, [drawPolygons, imageUrl, size, polygons]);
+  }, [imageUrl, drawPolygons]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      canvas.width = size.width;
+      canvas.height = size.height;
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        drawPolygons(ctx);
+      }
+    }
+  }, [size, drawPolygons]);
 
   return (
     <>
       <canvas
+        width={size.width}
+        height={size.height}
         className={classes.polygonCanvas}
         ref={canvasRef}
         onClick={handleCanvasClick}

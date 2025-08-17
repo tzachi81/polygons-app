@@ -3,16 +3,20 @@ import { getPolygons, createPolygon, deletePolygon } from '../services/api';
 import type { IPolygon } from '../types/global.types';
 import { toastify, unToastify } from '../components/appToaster/appToaster';
 import type { Id } from 'react-toastify';
+import useServerReady from './useServerReady';
+
 
 export const usePolygons = () => {
   const [polygons, setPolygons] = useState<IPolygon[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const { isServerReady } = useServerReady();
 
 
 
   const fetchImage = useCallback(async (retries: number = 3) => {
+
     let toastId: Id = '';
     setLoading(true);
     try {
@@ -44,38 +48,33 @@ export const usePolygons = () => {
   }, []);
 
   const fetchPolygons = useCallback(async () => {
-    setLoading(true);
-    let toastId: Id = '';
-    try {
-      toastId = toastify('Preparing canvas...', 'info');
-      const data = await getPolygons();
-      setPolygons(data);
+    if (imageUrl) {
 
-    } catch (err) {
+      setLoading(true);
+      let toastId: Id = '';
+      try {
+        const data = await getPolygons();
+        setPolygons(data);
 
-      setError(String(err));
-      unToastify(toastId);
-      toastId = toastify(String(err), 'error')
-    } finally {
-      unToastify(toastId);
-      setLoading(false);
+      } catch (err) {
+
+        setError(String(err));
+        unToastify(toastId);
+        toastId = toastify(String(err), 'error')
+      } finally {
+        unToastify(toastId);
+        setLoading(false);
+      }
     }
-  }, []);
+  }, [imageUrl]);
 
 
 
   useEffect(() => {
-    if (!imageUrl) {
+    if (!imageUrl && isServerReady) {
       fetchImage();
     }
-  }, [imageUrl]);
-
-  // !I moved this effect to App.tsx to implement serverReady dependency
-  // useEffect(() => {
-  //   if (imageUrl && imageUrl !== '') {
-  //     fetchPolygons();
-  //   };
-  // }, []);
+  }, [imageUrl, isServerReady]);
 
 
   const addPolygon = useCallback(async (name: string, points: [number, number][]) => {
@@ -99,7 +98,7 @@ export const usePolygons = () => {
     setLoading(true);
     let toastId: Id = '';
     try {
-      toastId = toastify('deleting polygon, please wait...', "info");
+      toastId = toastify(`Deleting polygon ${id}...`, 'info');
       await deletePolygon(id);
       await fetchPolygons();
     } catch (err) {
