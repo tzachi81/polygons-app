@@ -9,7 +9,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5005;
-const DELAY = 5000;
+const DELAY = 500;
 
 
 const customDelayMiddleware = (request: Request, response: Response, next: NextFunction) => {
