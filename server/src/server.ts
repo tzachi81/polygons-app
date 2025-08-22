@@ -18,7 +18,7 @@ const customDelayMiddleware = (request: Request, response: Response, next: NextF
   }, DELAY);
 };
 
-const devOrigins = ['http://localhost:5173', 'http://localhost:5174'];
+const devOrigins = ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:5174'];
 const allowedOrigins = (process.env.NODE_ENV === "production") ? [process.env.ALLOWED_ORIGIN] : devOrigins;
 
 

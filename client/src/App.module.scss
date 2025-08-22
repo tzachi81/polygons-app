@@ -12,12 +12,20 @@
   justify-content: center;
 }
 
+.appHeaderWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 .appHeader {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: -25px;
+
+  h1, p {
+    margin-bottom: 0;
+  }
 
   .actionHeader {
     display: flex;
@@ -32,18 +40,28 @@
 
 .mainContent {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
-    .saveButton {
+  .canvasInstructions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    margin: 17px;
+    text-align: center;
+  }
+
+  .saveButton {
     top: 60px;
     left: 0;
     height: 30px;
     background-color: lightyellow;
     color: black;
     font-size: 18px;
-    padding: 4px 7px; 
+    padding: 4px 7px;
     margin-bottom: 7px;
   }
 }
@@ -61,7 +79,7 @@
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  
+
   &.isClosed {
     background-color: transparent;
     height: 100vh;

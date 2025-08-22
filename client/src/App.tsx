@@ -110,7 +110,8 @@ const App: React.FC = () => {
           {/* APP HEADER */}
           <div className={classes.appHeaderWrapper}>
             <div className={classes.appHeader}>
-              <h1>Applygon - Draw your shapes</h1>
+              <h1>Applygon</h1>
+              <p>Draw you favourite shapes</p>
             </div>
 
             {/* SIDEBAR */}
@@ -156,7 +157,7 @@ const App: React.FC = () => {
           <div className={classes.mainContent}>
             {!loading && memoizedCanvas ? (
               <>
-                <p>
+                <p className={classes.canvasInstructions}>
                   Left click on the canvas to start drawing. Right click to
                   cancel
                 </p>
