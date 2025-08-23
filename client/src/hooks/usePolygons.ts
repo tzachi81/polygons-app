@@ -3,7 +3,6 @@ import { getPolygons, createPolygon, deletePolygon } from '../services/api';
 import type { IPolygon } from '../types/global.types';
 import { toastify, unToastify } from '../components/appToaster/appToaster';
 import type { Id } from 'react-toastify';
-import useServerReady from './useServerReady';
 
 
 export const usePolygons = () => {
@@ -11,10 +10,7 @@ export const usePolygons = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const { isServerReady } = useServerReady();
-
-
-
+  
   const fetchImage = useCallback(async (retries: number = 3) => {
 
     let toastId: Id = '';
@@ -71,10 +67,10 @@ export const usePolygons = () => {
 
 
   useEffect(() => {
-    if (!imageUrl && isServerReady) {
+    if (!imageUrl) {
       fetchImage();
     }
-  }, [imageUrl, isServerReady]);
+  }, [imageUrl]);
 
 
   const addPolygon = useCallback(async (name: string, points: [number, number][]) => {
